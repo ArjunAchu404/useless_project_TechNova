@@ -1,1 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excuse Bureau</title>
+<style>
+  :root{
+    --bg:#f0f0f3;
+    --phone:#ffffff;
+    --dark:#1c1b1f;
+    --dark-2:#2a292e;
+    --accent:#3ddc84;
+    --ink:#1c1b1f;
+    --grey:#8b8b93;
+    --line:#ececee;
+    --blue:#4f7cff;
+    --orange:#ff9f4f;
+    --green:#34c77a;
+    --purple:#a56bff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:24px;
+  }
+  .phone{
+    width:100%;
+    max-width:400px;
+    background:var(--phone);
+    border-radius:36px;
+    padding:28px 22px 18px;
+    box-shadow:0 30px 60px rgba(28,27,31,0.12);
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .topbar .greeting{
+    font-size:1.15rem;
+    font-weight:600;
+  }
+  .icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--line);
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .icon-btn svg{ width:18px; height:18px; }
 
+  .balance-card{
+    background:linear-gradient(160deg, var(--dark), var(--dark-2));
+    border-radius:26px;
+    padding:22px 20px 20px;
+    color:#fff;
+    margin-bottom:22px;
+  }
+  .balance-top{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .badge{
+    background:var(--accent);
+    color:#0f2b1a;
+    font-size:0.7rem;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:8px;
+  }
+  .balance-label{
+    font-size:0.75rem;
+    opacity:0.6;
+    margin-bottom:4px;
+  }
+  .balance-amount{
+    font-size:1.9rem;
+    font-weight:700;
+    margin-bottom:20px;
+    line-height:1.15;
+    min-height:1.4em;
+    word-break:break-word;
+  }
+  .balance-question{
+    font-size:0.8rem;
+    opacity:0.55;
+    margin-bottom:14px;
+  }
+  .action-row{
+    display:flex;
+    justify-content:space-between;
+    gap:6px;
+  }
+  .action{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:none;
+    color:#fff;
+    cursor:pointer;
+  }
+  .action-circle{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .action-circle svg{ width:18px; height:18px; stroke:#fff; }
+  .action span{
+    font-size:0.68rem;
+    opacity:0.8;
+  }
+  .action:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+  }
+
+  .action-row-secondary{
+    margin-top:14px;
+    gap:8px;
+  }
+  .pill-btn{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    background:rgba(255,255,255,0.1);
+    border:none;
+    border-radius:12px;
+    padding:9px 10px;
+    color:#fff;
+    font-size:0.78rem;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .pill-btn svg{ width:14px; height:14px; }
+  .pill-btn:hover:not(:disabled){
+    background:rgba(255,255,255,0.18);
+  }
+  .pill-btn:disabled{
+    opacity:0.35;
+    cursor:not-allowed;
+  }
+
+  .question-field{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .question-field input{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    font-size:0.9rem;
+    font-family:inherit;
+    color:var(--ink);
+    background:#fafafb;
+  }
+  .question-field input:focus{
+    outline:none;
+    border-color:var(--blue);
+  }
+
+  .section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+  }
+  .section-header h2{
+    font-size:1rem;
+    font-weight:600;
+  }
+  .section-header .clear{
+    font-size:0.78rem;
+    color:var(--grey);
+    background:none;
+    border:none;
+    cursor:pointer;
+  }
+
+  .history-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:18px;
+    max-height:300px;
+    overflow-y:auto;
+  }
+  .history-empty{
+    font-size:0.85rem;
+    color:var(--grey);
+    padding:18px 4px;
+    text-align:center;
+  }
+  .history-item{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:18px;
+  }
+  .cat-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .cat-icon svg{ width:18px; height:18px; stroke:#fff; }
+  .cat-work{ background:var(--blue); }
+  .cat-homework{ background:var(--orange); }
+  .cat-social{ background:var(--green); }
+  .cat-general{ background:var(--purple); }
+
+  .item-body{ flex:1; min-width:0; }
+  .item-question{
+    font-size:0.82rem;
+    font-weight:600;
+    margin-bottom:3px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .item-excuse{
+    font-size:0.8rem;
+    color:var(--grey);
+    line-height:1.4;
+  }
+  .item-time{
+    font-size:0.68rem;
+    color:var(--grey);
+    margin-top:6px;
+    opacity:0.8;
+  }
+
+  .bottom-nav{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    background:var(--dark);
+    border-radius:22px;
+    padding:12px 10px;
+  }
+  .nav-item{
+    width:20px;
+    height:20px;
+    opacity:0.45;
+  }
+  .nav-item svg{ width:100%; height:100%; stroke:#fff; }
+  .nav-item.active{
+    opacity:1;
+    background:#fff;
+    border-radius:50%;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-item.active svg{ stroke:var(--dark); width:18px; height:18px; }
+
+  .believability{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.08);
+    border-radius:16px;
+    padding:8px 12px;
+  }
+  .believability-label{
+    font-size:0.62rem;
+    color:#fff;
+    opacity:0.55;
+    white-space:nowrap;
+  }
+  .believability-track{
+    width:52px;
+    height:5px;
+    border-radius:3px;
+    background:rgba(255,255,255,0.15);
+    overflow:hidden;
+  }
+  .believability-fill{
+    height:100%;
+    border-radius:3px;
+    width:0%;
+    transition:width 0.5s ease, background 0.5s ease;
+  }
+  .believability-pct{
+    font-size:0.7rem;
+    font-weight:700;
+    color:#fff;
+    min-width:30px;
+    text-align:right;
+  }
+
+  @media (max-width:420px){
+    .phone{ padding:22px 16px 14px; border-radius:0; max-width:100%; min-height:100vh; }
+    body{ padding:0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <div class="topbar">
+    <div class="greeting">Excuse Bureau</div>
+    <button class="icon-btn" id="clearBtn" title="Clear history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="balance-card">
+    <div class="balance-top">
+      <span class="badge" id="countBadge">0 issued</span>
+    </div>
+    <div class="balance-label">Latest excuse</div>
+    <div class="balance-amount" id="excuseText">Ask the Bureau anything below.</div>
+    <div class="action-row">
+      <button class="action" id="generateBtn">
+        <span class="action-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <span>New</span>
+      </button>
+      <button class="action" id="copyBtn">
+        <span class="action-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        </span>
+        <span id="copyLabel">Copy</span>
+      </button>
+      <button class="action" id="regenBtn" disabled>
+        <span class="action-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        </span>
+        <span>Start over</span>
+      </button>
+    </div>
+    <div class="action-row action-row-secondary">
+      <button class="pill-btn" id="shortenBtn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12M6 6h12M6 18h6"/></svg>
+        Shorten
+      </button>
+      <button class="pill-btn" id="improveBtn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>
+        Improve
+      </button>
+    </div>
+  </div>
+
+  <div class="question-field">
+    <input type="text" id="questionInput" placeholder="Why were you late for work?" autocomplete="off">
+  </div>
+
+  <div class="section-header">
+    <h2>Recent excuses</h2>
+    <button class="clear" id="clearBtn2">Clear all</button>
+  </div>
+
+  <div class="history-list" id="historyList">
+    <div class="history-empty" id="historyEmpty">No excuses issued yet.</div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+    </div>
+    <div class="believability" id="believability">
+      <span class="believability-label">Believability</span>
+      <span class="believability-track">
+        <span class="believability-fill" id="believabilityFill"></span>
+      </span>
+      <span class="believability-pct" id="believabilityPct">—</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Paste your Gemini API key between the quotes below.
+  const GEMINI_API_KEY = "AQ.Ab8RN6LkNyV1aH-vSZMrRn4LAYzCKJi3wH0vSjfmccYTd1tuOg";
+
+  const fallbackExcuses = {
+    work: [
+      "My alarm clock joined a union and refused to ring before 10am.",
+      "I was abducted by aliens who insisted on a full tour before releasing me.",
+      "My cat unplugged my alarm in an act of political protest.",
+      "I got stuck helping a stranger parallel park for forty-five minutes."
+    ],
+    homework: [
+      "My dog didn't eat it, he filed it under 'evidence' for a case he's building.",
+      "The assignment achieved sentience and refused to be printed.",
+      "I left it in a jacket that got donated to a very confused stranger."
+    ],
+    social: [
+      "I got recruited into a flash mob and couldn't leave mid-routine.",
+      "My reflection asked for the night off and I felt obligated to cover.",
+      "I was busy convincing a pigeon that my balcony is not, in fact, its balcony."
+    ],
+    general: [
+      "A wizard cursed me with extreme forgetfulness, it's a whole thing.",
+      "I was legally obligated to finish a staring contest with a goose.",
+      "My evil twin has been very active lately."
+    ]
+  };
+
+  const keywordMap = {
+    work: ['work', 'late', 'meeting', 'boss', 'shift', 'office', 'job'],
+    homework: ['homework', 'assignment', 'essay', 'exam', 'school', 'class', 'teacher', 'study', 'project'],
+    social: ['plans', 'party', 'date', 'dinner', 'hangout', 'friend', 'wedding', 'invite', 'bail']
+  };
+
+  function detectCategory(question){
+    const q = (question || '').toLowerCase();
+    for(const [cat, words] of Object.entries(keywordMap)){
+      if(words.some(w => q.includes(w))) return cat;
+    }
+    return 'general';
+  }
+
+  function fallbackExcuse(category){
+    const list = fallbackExcuses[category] || fallbackExcuses.general;
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  const catIcons = {
+    work: '<path d="M3 7h18v13H3z"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/>',
+    homework: '<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>',
+    social: '<circle cx="9" cy="8" r="3"/><path d="M2 20c0-3 3-5 7-5s7 2 7 5"/><circle cx="17" cy="8" r="2.5"/>',
+    general: '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>'
+  };
+
+  const state = {
+    history: [],
+    lastExcuse: null,
+    conversation: []
+  };
+
+  const excuseTextEl = document.getElementById('excuseText');
+  const countBadge = document.getElementById('countBadge');
+  const input = document.getElementById('questionInput');
+  const generateBtn = document.getElementById('generateBtn');
+  const regenBtn = document.getElementById('regenBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const copyLabel = document.getElementById('copyLabel');
+  const historyList = document.getElementById('historyList');
+  const historyEmpty = document.getElementById('historyEmpty');
+  const clearBtn = document.getElementById('clearBtn');
+  const clearBtn2 = document.getElementById('clearBtn2');
+  const believabilityFill = document.getElementById('believabilityFill');
+  const believabilityPct = document.getElementById('believabilityPct');
+  const shortenBtn = document.getElementById('shortenBtn');
+  const improveBtn = document.getElementById('improveBtn');
+
+  const absurdWords = ['alien', 'wizard', 'union', 'goose', 'curse', 'sentient', 'sentience', 'portal', 'ghost', 'time travel', 'dragon', 'telepath', 'clone', 'twin', 'squirrel', 'pigeon', 'mayor'];
+
+  function scoreBelievability(excuse){
+    const text = excuse.toLowerCase();
+    let score = 55;
+    absurdWords.forEach(w => { if(text.includes(w)) score -= 12; });
+    if(text.length > 140) score -= 10;
+    if(text.length < 60) score += 8;
+    score += Math.floor(Math.random() * 15) - 7;
+    return Math.max(2, Math.min(96, score));
+  }
+
+  function updateBelievability(pct){
+    believabilityFill.style.width = pct + '%';
+    believabilityPct.textContent = pct + '%';
+    let color;
+    if(pct >= 60) color = 'var(--accent)';
+    else if(pct >= 30) color = 'var(--orange)';
+    else color = '#ff5f5f';
+    believabilityFill.style.background = color;
+  }
+
+  function timeAgo(){
+    return "just now";
+  }
+
+  function renderHistory(){
+    historyList.innerHTML = '';
+    if(state.history.length === 0){
+      historyList.appendChild(historyEmpty);
+      return;
+    }
+    state.history.slice().reverse().forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'history-item';
+      row.innerHTML = `
+        <div class="cat-icon cat-${item.category}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${catIcons[item.category]}</svg>
+        </div>
+        <div class="item-body">
+          <div class="item-question">${escapeHtml(item.question)}</div>
+          <div class="item-excuse">${escapeHtml(item.excuse)}</div>
+          <div class="item-time">${item.time}</div>
+        </div>
+      `;
+      historyList.appendChild(row);
+    });
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function updateBadge(){
+    countBadge.textContent = state.history.length + (state.history.length === 1 ? ' issued' : ' issued');
+  }
+
+  const SYSTEM_INSTRUCTION = `You are "The Excuse Bureau", a deadpan office that issues absurd, obviously-wrong excuses.
+
+Always respond with ONLY a raw JSON object, no markdown fences, no preamble, in exactly this shape:
+{"excuse": "one short ridiculous excuse (1-2 sentences, no quotes inside it)", "believability": <integer 0-100, how believable a normal person would find this excuse, be honest and vary it a lot depending on how absurd the excuse is>}
+
+The first user message is the situation to make an excuse for. Later user messages are follow-up instructions asking you to revise your PREVIOUS excuse (e.g. "make it more believable", "shorter", "less weird") — when that happens, revise the most recent excuse according to the instruction and still return the same JSON shape.`;
+
+  async function getAiExcuse(userMessage){
+    const apiKey = GEMINI_API_KEY.trim();
+    if(!apiKey || apiKey === "PASTE_YOUR_KEY_HERE"){
+      throw new Error("no api key set in code");
+    }
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+    const contents = [
+      ...state.conversation,
+      { role: "user", parts: [{ text: userMessage }] }
+    ];
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+        contents,
+        generationConfig: {
+          responseMimeType: "application/json"
+        }
+      })
+    });
+    if(!response.ok){
+      const errBody = await response.text();
+      throw new Error("API error: " + errBody);
+    }
+    const data = await response.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(!text) return null;
+    try{
+      const parsed = JSON.parse(text);
+      if(typeof parsed.excuse === 'string'){
+        state.conversation = [
+          ...contents,
+          { role: "model", parts: [{ text }] }
+        ];
+        return {
+          excuse: parsed.excuse.trim(),
+          believability: Number.isFinite(parsed.believability) ? Math.max(0, Math.min(100, Math.round(parsed.believability))) : null
+        };
+      }
+    } catch(e){
+      console.error("Failed to parse AI JSON response:", e, text);
+    }
+    return null;
+  }
+
+  async function issueExcuse(overrideMessage){
+    const messageText = (overrideMessage !== undefined ? overrideMessage : input.value.trim());
+    if(!messageText){
+      excuseTextEl.textContent = "Type a question below first.";
+      return;
+    }
+    const isFollowUp = state.conversation.length > 0;
+
+    generateBtn.disabled = true;
+    shortenBtn.disabled = true;
+    improveBtn.disabled = true;
+    excuseTextEl.style.opacity = 0.5;
+    excuseTextEl.textContent = isFollowUp ? "Revising…" : "Consulting the Bureau…";
+
+    const category = detectCategory(messageText);
+    let excuse;
+    let believability;
+    try{
+      const result = await getAiExcuse(messageText);
+      if(result){
+        excuse = result.excuse;
+        believability = result.believability !== null ? result.believability : scoreBelievability(excuse);
+      } else {
+        excuse = fallbackExcuse(category);
+        believability = scoreBelievability(excuse);
+      }
+    } catch(err){
+      console.error("Excuse Bureau error:", err);
+      excuse = fallbackExcuse(category);
+      believability = scoreBelievability(excuse);
+    }
+
+    excuseTextEl.style.opacity = 1;
+    excuseTextEl.textContent = excuse;
+    state.lastExcuse = excuse;
+    updateBelievability(believability);
+
+    state.history.push({
+      question: isFollowUp ? `↳ ${messageText}` : messageText,
+      excuse,
+      category,
+      time: timeAgo()
+    });
+    renderHistory();
+    updateBadge();
+
+    input.value = '';
+    input.placeholder = "Ask a follow-up… e.g. make it more believable";
+
+    regenBtn.disabled = false;
+    generateBtn.disabled = false;
+    shortenBtn.disabled = false;
+    improveBtn.disabled = false;
+  }
+
+  function startOver(){
+    state.conversation = [];
+    input.placeholder = "Why were you late for work?";
+    shortenBtn.disabled = true;
+    improveBtn.disabled = true;
+  }
+
+  generateBtn.addEventListener('click', issueExcuse);
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') issueExcuse();
+  });
+  regenBtn.addEventListener('click', () => {
+    startOver();
+    regenBtn.disabled = true;
+    excuseTextEl.textContent = "Ask the Bureau anything below.";
+    believabilityFill.style.width = '0%';
+    believabilityPct.textContent = '—';
+  });
+
+  shortenBtn.addEventListener('click', () => {
+    if(state.conversation.length === 0) return;
+    issueExcuse("Make that excuse shorter and punchier, one sentence if possible.");
+  });
+
+  improveBtn.addEventListener('click', () => {
+    if(state.conversation.length === 0) return;
+    issueExcuse("Improve that excuse — make it funnier and more creative while keeping it about the same topic.");
+  });
+
+  copyBtn.addEventListener('click', () => {
+    if(!state.lastExcuse) return;
+    navigator.clipboard.writeText(state.lastExcuse).then(() => {
+      copyLabel.textContent = 'Copied';
+      setTimeout(() => copyLabel.textContent = 'Copy', 1200);
+    });
+  });
+
+  function clearHistory(){
+    state.history = [];
+    state.lastExcuse = null;
+    state.conversation = [];
+    input.placeholder = "Why were you late for work?";
+    excuseTextEl.textContent = "Ask the Bureau anything below.";
+    regenBtn.disabled = true;
+    shortenBtn.disabled = true;
+    improveBtn.disabled = true;
+    believabilityFill.style.width = '0%';
+    believabilityPct.textContent = '—';
+    renderHistory();
+    updateBadge();
+  }
+
+  clearBtn.addEventListener('click', clearHistory);
+  clearBtn2.addEventListener('click', clearHistory);
+
+  renderHistory();
+  updateBadge();
+</script>
+
+</body>
+</html>
