@@ -101,6 +101,9 @@ Clone the repository:
 ```bash
 git clone https://github.com/tinkerhub/useless_project_temp
 
+### Project Documentation
+ For Software:
+ 
 
 ## Team Contributions
 - Arjun P: Frontend development, application logic, Gemini API integration, and project development
