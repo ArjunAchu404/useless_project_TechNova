@@ -101,22 +101,6 @@ Clone the repository:
 ```bash
 git clone https://github.com/tinkerhub/useless_project_temp
 
-### Project Documentation
-For Software:
-
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
 
 ## Team Contributions
 - Arjun P: Frontend development, application logic, Gemini API integration, and project development
